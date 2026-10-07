@@ -3,6 +3,7 @@ dotenv.config();
 
 import { app } from './app.js';
 import { sequelize } from './models/index.js';
+import { ensureSchema } from './utils/ensureSchema.js';
 
 const PORT = process.env.PORT || 4000;
 
@@ -12,6 +13,7 @@ async function start() {
     console.log('Conexion a la base de datos establecida.');
 
     await sequelize.sync();
+    await ensureSchema();
     console.log('Modelos sincronizados.');
 
     app.listen(PORT, () => {

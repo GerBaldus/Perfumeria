@@ -1,5 +1,5 @@
 import { sequelize, Order, OrderItem, Product, User } from '../models/index.js';
-import { ORDER_STATUSES } from '../models/Order.js';
+import { ORDER_STATUSES, SALE_STATUSES } from '../models/Order.js';
 
 export async function listOrders(req, res, next) {
   try {
@@ -27,6 +27,7 @@ export async function getOrder(req, res, next) {
       include: [
         { model: OrderItem, include: [{ model: Product, attributes: ['id', 'name', 'price'] }] },
         { model: User, attributes: ['id', 'name', 'email'] },
+        { model: User, as: 'seller', attributes: ['id', 'name'] },
       ],
     });
 
@@ -102,6 +103,12 @@ export async function updateOrderStatus(req, res, next) {
     const order = await Order.findByPk(req.params.id);
     if (!order) {
       return res.status(404).json({ message: 'Pedido no encontrado' });
+    }
+
+    // La venta queda a nombre del primero que toma el pedido, aunque despues otro cambie el estado
+    if (SALE_STATUSES.includes(status) && !order.sellerId) {
+      order.sellerId = req.user.id;
+      order.confirmedAt = new Date();
     }
 
     order.status = status;

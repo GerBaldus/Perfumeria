@@ -2,6 +2,8 @@ import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/database.js';
 
 export const ORDER_STATUSES = ['pendiente', 'confirmado', 'enviado', 'entregado', 'cancelado'];
+// Estados en los que el pedido cuenta como venta
+export const SALE_STATUSES = ['confirmado', 'enviado', 'entregado'];
 
 export const Order = sequelize.define('Order', {
   id: {
@@ -18,6 +20,11 @@ export const Order = sequelize.define('Order', {
     type: DataTypes.DECIMAL(10, 2),
     allowNull: false,
     defaultValue: 0,
+  },
+  // Momento en que un vendedor/admin tomo el pedido; define el periodo de la venta en las estadisticas
+  confirmedAt: {
+    type: DataTypes.DATE,
+    allowNull: true,
   },
 }, {
   tableName: 'orders',

@@ -11,6 +11,10 @@ Product.belongsTo(Category, { foreignKey: 'categoryId' });
 User.hasMany(Order, { foreignKey: 'userId', onDelete: 'CASCADE' });
 Order.belongsTo(User, { foreignKey: 'userId' });
 
+// Vendedor (o admin) al que se le atribuye la venta
+User.hasMany(Order, { as: 'sales', foreignKey: 'sellerId', onDelete: 'SET NULL' });
+Order.belongsTo(User, { as: 'seller', foreignKey: 'sellerId' });
+
 Order.hasMany(OrderItem, { foreignKey: 'orderId', onDelete: 'CASCADE' });
 OrderItem.belongsTo(Order, { foreignKey: 'orderId' });
 

@@ -32,6 +32,7 @@ export function Navbar() {
             <Link to="/orders">Pedidos</Link>
             <Link to="/admin/products">Productos</Link>
             <Link to="/admin/categories">Categorías</Link>
+            <Link to="/admin/stats">Estadísticas</Link>
           </>
         )}
 
@@ -42,6 +43,7 @@ export function Navbar() {
         {user ? (
           <>
             <span className="user-chip">{user.name} ({user.role})</span>
+            <Link to="/profile">Mi perfil</Link>
             <button onClick={handleLogout}>Salir</button>
           </>
         ) : (
