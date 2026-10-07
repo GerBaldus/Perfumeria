@@ -42,6 +42,7 @@ export function OrderDetail() {
       <h1>Pedido #{order.id}</h1>
       <p>Fecha: {new Date(order.createdAt).toLocaleString()}</p>
       {isStaff && order.User && <p>Cliente: {order.User.name} ({order.User.email})</p>}
+      {isStaff && order.seller && <p>Vendedor: {order.seller.name}</p>}
 
       <p>
         Estado:{' '}
